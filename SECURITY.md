@@ -1,34 +1,27 @@
 # Security Policy
 
+JorahOne projects are self-hosted infrastructure tools. Security matters.
+
 ## Supported versions
 
-| Version | Supported |
-|---------|-----------|
-| Latest  | ✅ Yes    |
-| Older   | ❌ No     |
+We patch security issues in the latest release of the default branch. Older releases are best-effort.
 
 ## Reporting a vulnerability
 
-If you discover a security vulnerability, please report it responsibly:
+Please **do not** open a public issue for security vulnerabilities.
 
-1. **Do NOT** open a public GitHub issue.
-2. Email **info@jorahone.com**.
-3. Include a clear description, steps to reproduce, affected files, and potential impact.
-4. Include a suggested fix or patch if you have one.
+Instead, email `security@example.com` with:
 
-## Response timeline
+- Affected repository and version/branch.
+- Steps to reproduce or proof-of-concept.
+- Possible impact.
+- Suggested fix (optional).
 
-- **Acknowledgment**: within 48 hours
-- **Initial assessment**: within 1 week
-- **Fix release**: depends on severity, typically within 2 weeks
+We will respond within 72 hours and coordinate disclosure.
 
-## Security best practices
+## Security practices for self-hosters
 
-- Never commit secrets or API keys.
-- Use environment variables for all configuration.
-- Keep Tailscale devices and Docker images up to date.
-- Prefer HTTPS for external endpoints.
-
-## Scope
-
-This policy covers the code, configuration, and documentation in this repository only. For issues with upstream projects, please report them to their respective maintainers.
+- Run services behind a reverse proxy (Caddy/Nginx) with TLS.
+- Keep Tailscale/WireGuard as the preferred exposure model.
+- Rotate secrets and API keys regularly.
+- Bind services to localhost unless a reverse proxy handles TLS.

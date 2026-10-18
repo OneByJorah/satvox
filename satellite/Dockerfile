@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libasound2-dev portaudio19-dev alsa-utils gcc \
+    build-essential g++ python3-dev libasound2-dev portaudio19-dev alsa-utils gcc \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

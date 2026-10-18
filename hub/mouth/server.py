@@ -25,12 +25,18 @@ def health():
 @app.post("/synthesize")
 def synthesize(req: SpeakRequest):
     model_path = os.path.join(VOICES_DIR, f"{VOICE}.onnx")
-    out_path = tempfile.mktemp(suffix=".wav")
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+        out_path = tmp.name
 
-    subprocess.run(
-        [PIPER_BIN, "--model", model_path, "--output_file", out_path],
-        input=req.text.encode("utf-8"),
-        check=True,
-    )
-
-    return FileResponse(out_path, media_type="audio/wav", filename="reply.wav")
+    try:
+        subprocess.run(
+            [PIPER_BIN, "--model", model_path, "--output_file", out_path],
+            input=req.text.encode("utf-8"),
+            check=True,
+            timeout=30,
+        )
+        return FileResponse(out_path, media_type="audio/wav", filename="reply.wav")
+    except Exception:
+        if os.path.exists(out_path):
+            os.unlink(out_path)
+        raise

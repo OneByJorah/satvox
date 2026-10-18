@@ -64,20 +64,21 @@
 <script>
 (async function(){
   const ws=document.getElementById('ws');
-  ws.textContent='workspace: local';
+  const base=location.origin;
   const set=(id,text,ok)=>{const el=document.getElementById(id);el.textContent=text;el.className='status '+(ok?'ok':'err')};
   try{
-    const b=await fetch('/health').then(r=>r.json());
+    const b=await fetch(base+'/health').then(r=>r.json());
+    ws.textContent='workspace: '+(b.honcho?'remote':'local');
     set('bridge-status', b.status==='ok'?'OK':'DOWN', b.status==='ok');
     document.getElementById('bridge-honcho').textContent='honcho: '+(b.honcho?'on':'off');
-  }catch(e){set('bridge-status','UNREACHABLE',false)}
+  }catch(e){ws.textContent='workspace: offline';set('bridge-status','UNREACHABLE',false)}
   try{
-    const e=await fetch('http://localhost:9000/health').then(r=>r.json());
+    const e=await fetch(base+'/ears/health').then(r=>r.json());
     set('ears-status', e.status==='ok'?'OK':'DOWN', e.status==='ok');
     document.getElementById('ears-model').textContent='model: '+(e.model||'—');
   }catch(e){set('ears-status','UNREACHABLE',false)}
   try{
-    const m=await fetch('http://localhost:9001/health').then(r=>r.json());
+    const m=await fetch(base+'/mouth/health').then(r=>r.json());
     set('mouth-status', m.status==='ok'?'OK':'DOWN', m.status==='ok');
     document.getElementById('mouth-voice').textContent='voice: '+(m.voice||'—');
   }catch(e){set('mouth-status','UNREACHABLE',false)}

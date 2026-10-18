@@ -41,21 +41,15 @@ services:
       - EARS_URL=http://hermes-ears:9000
       - MOUTH_URL=http://hermes-mouth:9001
     ports:
-      - "${HUB_BIND_IP:-127.0.0.1}:18000:8000"   # reachable over Tailscale by every satellite (hub port 8000 used locally)
+      - "${HUB_BIND_IP:-127.0.0.1}:18000:8000"
     networks:
       - hermes-net
-      - stackdeploy-backend
-      - stackdeploy-tailnet
     volumes:
       - ./hub/dashboard:/app/dashboard:ro
 
 networks:
   hermes-net:
     driver: bridge
-  stackdeploy-backend:
-    external: true
-  stackdeploy-tailnet:
-    external: true
 
 volumes:
   whisper-models:

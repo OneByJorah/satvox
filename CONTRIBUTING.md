@@ -1,38 +1,29 @@
-# Contributing to $(basename $(pwd))
+# Contributing to OneByJorah projects
 
-Thank you for your interest in contributing!
+Thanks for taking the time to contribute! Every island in the JorahOne archipelago gets stronger with community help.
 
-## How to Contribute
+## How to contribute
 
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
+1. **Open an issue first** for bugs, features, or large refactors so we can align on direction.
+2. **Fork the repo** and create a feature branch (`git checkout -b feature/short-name`).
+3. **Keep changes focused** — one concern per pull request.
+4. **Write clear commit messages** in the imperative: `Add SNMP trap handler`, not `Added handler`.
+5. **Update docs** if your change affects usage, configuration, or architecture.
+6. **Test your change** locally before opening a PR.
 
-## Development Setup
+## Pull request checklist
 
-```bash
-git clone https://github.com/OneByJorah/$(basename $(pwd)).git
-cd $(basename $(pwd))
-```
+- [ ] Branch is up to date with the default branch.
+- [ ] README/screenshots are updated if the UI or install steps changed.
+- [ ] No secrets, credentials, or private IPs are committed.
+- [ ] License header is preserved on new source files (MIT).
 
-See README.md for specific setup instructions.
+## Code style
 
-## Code Standards
+- Python: PEP 8, type hints where helpful.
+- JavaScript/TypeScript: consistent formatting, `const`/`let`, async/await over callbacks.
+- Shell/PowerShell: defensive execution, clear parameter comments.
 
-- Follow existing code style
-- Add comments for complex logic
-- Update documentation for new features
-- Test your changes before submitting
+## Questions?
 
-## Pull Request Guidelines
-
-- Give a clear description of changes
-- Reference any related issues
-- Ensure all tests pass
-- Keep PRs focused on a single change
-
-## License
-
-By contributing, you agree that your contributions will be licensed under the MIT License.
+Open a [Discussion](https://github.com/OneByJorah/OneByJorah/discussions) or reach out at contact@example.com.

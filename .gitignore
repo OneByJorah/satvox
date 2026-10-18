@@ -15,3 +15,11 @@ Thumbs.db
 
 # Docker
 docker-compose.override.yml
+
+# OneByJorah portfolio tooling
+.venv-screenshot/
+
+# Node
+node_modules/
+package-lock.json
+package.json
