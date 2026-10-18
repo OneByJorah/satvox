@@ -18,10 +18,10 @@ on:
         default: docker-compose.yml
       base-url:
         type: string
-        default: http://127.0.0.1:8080
+        default: http://127.0.0.1:8000
       health-url:
         type: string
-        default: http://127.0.0.1:8080/healthz
+        default: http://127.0.0.1:8000/health
       script:
         type: string
         default: scripts/screenshots.mjs
@@ -70,7 +70,9 @@ jobs:
 
       - name: Wait for health
         run: |
-          for i in $(seq 1 60); do
+          # The bridge waits on ears/mouth healthchecks; ears has a 120s start period
+          # (fresh whisper model download on every run), so allow up to 4 minutes.
+          for i in $(seq 1 240); do
             if curl -fsS "$HEALTH_URL" >/dev/null 2>&1; then echo "healthy after ${i}s"; exit 0; fi
             sleep 1
           done
