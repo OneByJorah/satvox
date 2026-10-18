@@ -44,10 +44,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build ears image
-        run: docker build -t voicesat-ears -f hub/ears/Dockerfile .
+        run: docker build -t voicesat-ears -f hub/ears/Dockerfile hub/ears
       - name: Build mouth image
-        run: docker build -t voicesat-mouth -f hub/mouth/Dockerfile .
+        run: docker build -t voicesat-mouth -f hub/mouth/Dockerfile hub/mouth
       - name: Build bridge image
-        run: docker build -t voicesat-bridge -f hub/bridge/Dockerfile .
+        run: docker build -t voicesat-bridge -f hub/bridge/Dockerfile hub/bridge
       - name: Build satellite image
-        run: docker build -t voicesat-satellite -f satellite/Dockerfile .
+        run: docker build -t voicesat-satellite -f satellite/Dockerfile satellite
