@@ -21,4 +21,4 @@ We want the JorahOne community to be welcoming, constructive, and professional.
 
 Maintainers may remove, edit, or reject contributions and temporarily or permanently ban anyone for unacceptable behavior.
 
-Report issues to `info@jorahone.com`.
+Report issues to `contact@example.com`.

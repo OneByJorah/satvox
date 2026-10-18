@@ -1,55 +1,73 @@
-version: "3.9"
-
-# ============================================================================
-# Hermes Satellite — Wake-word voice pipeline
-# JorahOne
-#
-# Runs the satellite wake-word listener and the hub ears (STT bridge).
-# ============================================================================
-
+# satvox hub — local voice-pipeline dashboard and API
 services:
-  hub:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: hermes-satellite-hub
-    ports:
-      - "${HUB_PORT:-8000}:8000"
-    env_file:
-      - .env
+  ears:
+    build: ./hub/ears
+    container_name: satvox-ears
+    restart: unless-stopped
     environment:
-      - WHISPER_MODEL=${WHISPER_MODEL:-small.en}
-      - WHISPER_DEVICE=${WHISPER_DEVICE:-cpu}
-      - WHISPER_COMPUTE_TYPE=${WHISPER_COMPUTE_TYPE:-int8}
+      WHISPER_MODEL: ${WHISPER_MODEL:-small.en}
+      WHISPER_DEVICE: ${WHISPER_DEVICE:-cpu}
+      WHISPER_COMPUTE_TYPE: ${WHISPER_COMPUTE_TYPE:-int8}
     volumes:
-      - whisper-cache:/root/.cache
-    restart: unless-stopped
+      - whisper-cache:/models
+    networks:
+      - satvox-net
     healthcheck:
-      test: ["CMD", "python3", "-c", "import httpx; httpx.get('http://localhost:8000/health', timeout=5)"]
-      interval: 30s
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9000/health').read()"]
+      interval: 15s
       timeout: 10s
-      retries: 3
-      start_period: 15s
+      retries: 12
+      start_period: 120s
 
-  satellite:
+  mouth:
+    build: ./hub/mouth
+    container_name: satvox-mouth
+    restart: unless-stopped
+    environment:
+      PIPER_VOICE: ${PIPER_VOICE:-en_US-lessac-medium}
+    volumes:
+      - piper-voices:/voices
+    networks:
+      - satvox-net
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9001/health').read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  bridge:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: hermes-satellite
-    network_mode: host
-    env_file:
-      - .env
-    environment:
-      - BRIDGE_URL=${BRIDGE_URL:-http://localhost:8000}
-      - WAKE_MODEL=${WAKE_MODEL:-hey_jarvis}
-      - SATELLITE_ID=${SATELLITE_ID:-satellite-1}
-      - WAKE_THRESHOLD=${WAKE_THRESHOLD:-0.5}
-    devices:
-      - /dev/snd:/dev/snd
+    container_name: satvox-bridge
     restart: unless-stopped
+    env_file: .env
+    environment:
+      EARS_URL: http://satvox-ears:9000
+      MOUTH_URL: http://satvox-mouth:9001
+    ports:
+      - "${HUB_BIND_IP:-127.0.0.1}:${HUB_PORT:-8000}:8000"
+    volumes:
+      - ./hub/dashboard:/app/dashboard:ro
+    networks:
+      - satvox-net
     depends_on:
-      hub:
+      ears:
         condition: service_healthy
+      mouth:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health').read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  satvox-net:
+    driver: bridge
 
 volumes:
   whisper-cache:
+  piper-voices:

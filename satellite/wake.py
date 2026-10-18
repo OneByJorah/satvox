@@ -8,7 +8,7 @@ import sounddevice as sd
 import webrtcvad
 from openwakeword.model import Model
 
-BRIDGE_URL = os.getenv("BRIDGE_URL", "http://hub.tailnet.ts.net:8000")
+BRIDGE_URL = os.getenv("BRIDGE_URL", "http://localhost:8000/satellite/utterance")
 WAKE_MODEL = os.getenv("WAKE_MODEL", "hey_jarvis")
 SATELLITE_ID = os.getenv("SATELLITE_ID", "satellite-1")
 WAKE_THRESHOLD = float(os.getenv("WAKE_THRESHOLD", "0.5"))

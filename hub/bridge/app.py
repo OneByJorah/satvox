@@ -20,7 +20,10 @@ HONCHO_API_KEY = os.getenv("HONCHO_API_KEY", "")
 HONCHO_WORKSPACE_ID = os.getenv("HONCHO_WORKSPACE_ID", "hermes-satellite")
 HONCHO_USER_ID = os.getenv("HONCHO_USER_ID", "user")
 HONCHO_ASSISTANT_ID = os.getenv("HONCHO_ASSISTANT_ID", "hermes")
-CONTEXT_TOKENS = int(os.getenv("HONCHO_CONTEXT_TOKENS", "4000"))
+try:
+    CONTEXT_TOKENS = int(os.getenv("HONCHO_CONTEXT_TOKENS", "4000"))
+except ValueError:
+    CONTEXT_TOKENS = 4000
 
 SYSTEM_PROMPT = (
     "You are Hermes, a concise voice assistant. Keep replies short and "
@@ -76,6 +79,28 @@ def get_session(satellite_id: str):
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok", "honcho": bool(HONCHO_URL)}
+
+
+@app.get("/ears/health")
+async def ears_health():
+    async with httpx.AsyncClient(timeout=5) as client:
+        resp = await client.get(f"{EARS_URL}/health")
+    return Response(
+        content=resp.content,
+        media_type=resp.headers.get("content-type", "application/json"),
+        status_code=resp.status_code,
+    )
+
+
+@app.get("/mouth/health")
+async def mouth_health():
+    async with httpx.AsyncClient(timeout=5) as client:
+        resp = await client.get(f"{MOUTH_URL}/health")
+    return Response(
+        content=resp.content,
+        media_type=resp.headers.get("content-type", "application/json"),
+        status_code=resp.status_code,
+    )
 
 
 @app.post("/satellite/utterance")
