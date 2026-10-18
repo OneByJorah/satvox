@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-echo "=== Installing VoiceSat ==="
+echo "=== Installing satvox ==="
 
 if ! command -v docker &> /dev/null; then
     echo "Docker is required but not installed. Please install Docker first."
@@ -25,11 +25,11 @@ if [ ! -f .env ]; then
     fi
 fi
 
-echo "Building and starting VoiceSat on port 8000..."
+echo "Building and starting satvox on port 8000..."
 if docker compose version &> /dev/null; then
     docker compose up --build -d
 else
     docker-compose up --build -d
 fi
 
-echo "VoiceSat installed. Access: http://localhost:8000"
+echo "satvox installed. Access: http://localhost:8000"
