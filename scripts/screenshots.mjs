@@ -11,13 +11,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 
-const BASE = process.env.BASE_URL || "http://127.0.0.1:8080";
+const BASE = process.env.BASE_URL || "http://127.0.0.1:8000";
 const OUT = process.env.OUT_DIR || "docs/screenshots";
 const RECORD = process.env.RECORD === "1";
 
-// Edit this list per project: one entry per screen worth showing.
+// Real screens of the satvox hub dashboard.
 const PAGES = [
-  { name: "dashboard", path: "/", waitFor: "#app-ready" },
+  { name: "dashboard", path: "/", waitFor: "h1" },
 ];
 
 const FORBIDDEN = [
