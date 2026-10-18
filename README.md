@@ -22,7 +22,7 @@ Formerly VoiceSat.
 
 ## Why this exists
 
-Smart speakers stop working when the cloud does, and they hear everything you say. satvox splits the job: a cheap Raspberry Pi satellite listens for a wake word and streams audio to a hub that runs STT, an LLM, and TTS locally. Conversation memory is kept in a self-hosted [Honcho](https://github.com/user-attachments/assets/placeholder) instance so every satellite shares the same brain. Add as many satellites as you want; your voice data never leaves your network.
+Smart speakers stop working when the cloud does, and they hear everything you say. satvox splits the job: a cheap Raspberry Pi satellite listens for a wake word and streams audio to a hub that runs STT, an LLM, and TTS locally. Conversation memory is kept in a self-hosted Honcho instance so every satellite shares the same brain. Add as many satellites as you want; your voice data never leaves your network.
 
 Built for privacy-conscious users who want a voice assistant that works entirely on their own hardware.
 
