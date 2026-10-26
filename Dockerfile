@@ -2,7 +2,7 @@
 # Hermes Satellite — Wake-word voice pipeline
 # JorahOne
 # =============================================================================
-FROM python:3.11-slim AS builder
+FROM python:3.12-slim AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc g++ python3-dev libasound2-dev portaudio19-dev \
@@ -13,7 +13,7 @@ COPY satellite/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # ---------------------------------------------------------------------------
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libasound2 portaudio19-dev alsa-utils \
